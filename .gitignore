@@ -1,0 +1,5 @@
+geckodriver.log
+selenium-manager
+venv
+__pycache__
+.env
