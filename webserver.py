@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect
 from re import match
 import time
 import uuid
+import bleach
 
 VERSION = "1.0.0"
 
@@ -43,5 +44,18 @@ def getWebServer(taskQueue):
         if status == "not found":
             return redirect("/status", 302)
         return render_template('task.html', id=str(taskID), status=status.capitalize(), version=VERSION)
+    
+    @app.route("/api/tasks/status/<taskID>")
+    def getTaskStatus(taskID):
+        if not is_valid_uuid(taskID):
+            return {"status": "error"}
+        status = taskQueue.status(taskID)
+        # Since the taskID is user input, we need to sanitize and escape it.
+        # Auto escaping is turned on for jinja2 templates, but not for REST routes.
+        return {
+            "id": bleach.clean(taskID),
+            "status": status
+        }
 
-    return app  # do not forget to return the app
+
+    return app

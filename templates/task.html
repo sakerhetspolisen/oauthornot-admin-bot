@@ -5,7 +5,7 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ulla impersonator</title>
+    <title>Email {{ id }} | Ulla Phisher®</title>
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
@@ -261,11 +261,13 @@
         </a>
       </div>
       <div
-        class="d-flex justify-content-center overflow-x-scroll"
-        style="width: 100%"
+        class="d-flex justify-content-center overflow-x-scroll align-items-center"
+        style="width: 100%;transition: .3s;"
+        id="hero"
       >
         <div class="px-4 py-5">
-          <h1 class="display-5 fw-bold text-body-emphasis text-center">
+          <h6 class="text-body-emphasis">Status of {{ id }}:</h6>
+          <h1 class="display-2 fw-bold text-body-emphasis text-center" id="status">
             {{ status }}
           </h1>
         </div>
@@ -279,5 +281,31 @@
     ></script>
 
     <script src="/static/sidebars.js"></script>
+    <script>
+      var fetchInterval = setInterval(() => {
+        let status = document.getElementById("status").innerText
+        if (status.toLowerCase() === "completed") clearInterval(fetchInterval)
+        let prom = fetch(`/api/tasks/status/{{ id }}`)
+        prom
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById("status").innerText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+          })
+      },10000)
+      const hero = document.getElementById("hero")
+      var bgInterval = setInterval(() => {
+        let status = document.getElementById("status").innerText
+        switch (status.toLowerCase()) {
+          case "completed":
+            hero.style.backgroundColor = "#198754"
+            break
+          case "processing":
+            hero.style.backgroundColor = "#ffc107"
+            break
+          default:
+            break
+        }
+      })
+    </script>
   </body>
 </html>
