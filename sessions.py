@@ -4,13 +4,9 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 from time import sleep
-from dotenv import load_dotenv
-import os
+from dotenv import dotenv_values
 
-load_dotenv()
-
-gh_admin_username = os.getenv("GITHUB_ADMIN_USER_USERNAME")
-gh_admin_pwd = os.getenv("GITHUB_ADMIN_USER_PASSWORD")
+config = dotenv_values(".env")
 
 
 class GithubAdminSession():
@@ -26,11 +22,12 @@ class GithubAdminSession():
         driver.implicitly_wait(2)
 
         username = driver.find_element(by=By.ID, value="login_field")
-        username.send_keys(gh_admin_username)
+        username.send_keys(config["GITHUB_ADMIN_USER_USERNAME"])
         pwd = driver.find_element(by=By.ID, value="password")
-        pwd.send_keys(gh_admin_pwd)
+        pwd.send_keys(config["GITHUB_ADMIN_USER_PASSWORD"])
         sign_in_btn = driver.find_element(by=By.NAME, value="commit")
         sign_in_btn.click()
+
 
         self.driver = driver
 
@@ -76,7 +73,7 @@ class GithubAdminSession():
                 by=By.CSS_SELECTOR, value="summary.btn").click()
             fillInUserName = self.driver.find_element(
                 by=By.ID, value="revoke-all-settings-oauth")
-            fillInUserName.send_keys(gh_admin_username)
+            fillInUserName.send_keys(config["GITHUB_ADMIN_USER_USERNAME"])
             fillInUserName.send_keys(Keys.ENTER)
         except NoSuchElementException:
             self.logger.error(
