@@ -35,7 +35,7 @@ curl -O https://github.com/SeleniumHQ/selenium/raw/trunk/common/manager/linux/se
 chmod +x selenium-manager
 ./selenium-manager --browser firefox
 ```
-Create `.env` file in repository root, containing the following:
+Create an `.env` file in the repository root, containing the following:
 ```
 GITHUB_ADMIN_USER_USERNAME=<your_github_mock_admin_username>
 GITHUB_ADMIN_USER_PASSWORD=<your_github_mock_admin_pwd>
