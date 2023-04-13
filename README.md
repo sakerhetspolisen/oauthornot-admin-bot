@@ -5,6 +5,8 @@ A web server that takes URLs and mimicks if a SysAdmin would mistakenly click on
 
 **Part of the OAuthOrNot package.**
 
+![Screenshot](screenshot.png)
+
 ## Features
 - Uses `multiprocessing`'s `Queue` to create a distributed task queue, like a simplified version of Celery
 - Selenium Webdriver is used with the geckodriver to spawn sessions and configure safety features
